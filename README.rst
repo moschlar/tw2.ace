@@ -14,3 +14,7 @@ See also their repository at https://github.com/ajaxorg/ace
 This package comes bundled with ACE from 11.05.2012, which is released
 under a BSD-3-Clause license.
 This package itself is licensed under the WTFPL, Version 2 (for the moment).
+
+The directory ``ace-builds`` is a git submodule, but you don't have to
+check it out if you want to use tw2.ace! It is only included as a convenience
+for updating the bundled libraries.
