@@ -3,10 +3,12 @@ from setuptools import setup, find_packages
 setup(
     name='tw2.ace',
     version='0.1',
-    description='',
+    description='ToscaWidgets2 widget for ACE, a JavaScript-based source code editor',
+    long_description=open('README.rst').read(),
     author='Moritz Schlarb',
     author_email='mail@moritz-schlarb.de',
     url='https://github.com/moschlar/tw2.ace',
+    license='WTFPL-2',
     install_requires=[
         "tw2.core",
         "tw2.forms",

@@ -13,4 +13,4 @@ See also their repository at https://github.com/ajaxorg/ace
 
 This package comes bundled with ACE from 11.05.2012, which is released
 under a BSD-3-Clause license.
-This package itself is licensed under the WTFPL, Version 2.
+This package itself is licensed under the WTFPL, Version 2 (for the moment).
