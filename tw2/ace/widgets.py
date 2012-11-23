@@ -9,12 +9,6 @@ ace_js = twc.JSLink(
     edit=twc.js_function('ace.edit')
     )
 
-ace_min_js = twc.JSLink(
-    modname=__name__,
-    filename='static/ace-min/ace.js',
-    edit=twc.js_function('ace.edit')
-    )
-
 ace_modes = dict(
     (f.strip('mode_').rstrip('.js'), twc.CSSLink(modname=__name__, filename=os.path.join('static', f)))
     for f in os.listdir(os.path.join(os.path.dirname(__file__), 'static')) if f.startswith('mode_'))
