@@ -17,12 +17,10 @@ ace_themes = dict(
     for f in os.listdir(os.path.join(os.path.dirname(__file__), 'static')) if f.startswith('theme_'))
 
 ace_css = twc.CSSSource(src=u'''
-.ace {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+.ace-wrapper {
+    position: relative;
+    width: 600px;
+    height: 200px;
 }
 ''')
 
@@ -30,10 +28,9 @@ ace_css = twc.CSSSource(src=u'''
 class AceWidget(twf.TextArea):
     template = "tw2.ace.templates.ace"
 
-    css_class = 'ace'
     # declare static resources here
     # you can remove either or both of these, if not needed
-    resources = [ace_css, ace_js]
+    resources = [ace_js, ace_css]
 
 #    @classmethod
 #    def post_define(cls):
