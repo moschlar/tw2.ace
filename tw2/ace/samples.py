@@ -8,7 +8,13 @@ See http://toscawidgets.org/documentation/WidgetBrowser for more information
 
 import widgets
 
+
 class DemoAceWidget(widgets.AceWidget):
     # Provide default parameters, value, etc... here
     # default = <some-default-value>
-    pass
+#    mode = 'python'
+    value = u'''
+def hello():
+    print u'Hello World!'
+    return True
+'''
