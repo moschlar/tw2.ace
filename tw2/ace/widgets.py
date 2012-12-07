@@ -6,7 +6,13 @@ import tw2.forms as twf
 ace_js = twc.JSLink(
     modname=__name__,
     filename='static/ace/ace.js',
-    edit=twc.js_function('ace.edit')
+    edit=twc.js_function('ace.edit'),
+    require=twc.js_function('ace.require'),
+    )
+ext_textarea_js = twc.JSLink(
+    modname=__name__,
+    filename='static/ace/ext-textarea.js',
+    transformTextarea=ace_js.require('ace/ext/textarea').transformTextarea
     )
 
 ace_modes = dict(
@@ -30,7 +36,9 @@ class AceWidget(twf.TextArea):
 
     # declare static resources here
     # you can remove either or both of these, if not needed
-    resources = [ace_js, ace_css]
+    resources = [ace_js, ext_textarea_js, ace_css]
+
+    mode = twc.Param('The highlighting mode for ace', default='')
 
 #    @classmethod
 #    def post_define(cls):
@@ -40,4 +48,4 @@ class AceWidget(twf.TextArea):
     def prepare(self):
         super(AceWidget, self).prepare()
         # put code here to run just before the widget is displayed
-        self.add_call(ace_js.edit(self.compound_id).getSession().setMode('ace/mode/java'))
+        self.add_call(ext_textarea_js.transformTextarea(twc.js_function('document.getElementById')(self.compound_id)).getSession().setMode('ace/mode/' + self.mode))

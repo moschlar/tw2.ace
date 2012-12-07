@@ -12,7 +12,7 @@ import widgets
 class DemoAceWidget(widgets.AceWidget):
     # Provide default parameters, value, etc... here
     # default = <some-default-value>
-#    mode = 'python'
+    mode = 'python'
     value = u'''
 def hello():
     print u'Hello World!'
