@@ -22,21 +22,11 @@ ace_themes = dict(
     (f.strip('theme-').rstrip('.js'), twc.JSLink(modname=__name__, filename=os.path.join('static/ace', f)))
     for f in os.listdir(os.path.join(os.path.dirname(__file__), 'static/ace')) if f.startswith('theme-'))
 
-ace_css = twc.CSSSource(src=u'''
-.ace-wrapper {
-    position: relative;
-    width: 600px;
-    height: 200px;
-}
-''')
-
 
 class AceWidget(twf.TextArea):
-    template = "tw2.ace.templates.ace"
-
     # declare static resources here
     # you can remove either or both of these, if not needed
-    resources = [ace_js, ext_textarea_js, ace_css]
+    resources = [ace_js, ext_textarea_js]
 
     mode = twc.Param('The highlighting mode for ace', default='')
 
