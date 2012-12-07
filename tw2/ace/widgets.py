@@ -38,4 +38,5 @@ class AceWidget(twf.TextArea):
     def prepare(self):
         super(AceWidget, self).prepare()
         # put code here to run just before the widget is displayed
+        self.safe_modify('resources')
         self.add_call(ext_textarea_js.transformTextarea(twc.js_function('document.getElementById')(self.compound_id)).getSession().setMode('ace/mode/' + self.mode))
