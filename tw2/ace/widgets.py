@@ -24,10 +24,48 @@ ace_themes = dict(
     for f in os.listdir(os.path.join(os.path.dirname(__file__), 'static/ace')) if f.startswith('theme-'))
 
 
+init_js = twc.JSSource(src=u'''
+// Globals
+var ace_textarea = ace.require("ace/ext/textarea");
+var ace_editors = {};
+
+function tw2_ace(target, theme, mode) {
+    //var editor = ace.edit(target);
+    var editor = ace_textarea.transformTextarea(document.getElementById(target));
+    if (theme) {
+        editor.setTheme("ace/theme/" + theme);
+    };
+    if (mode) {
+        editor.getSession().setMode("ace/mode/" + mode);
+    };
+    ace_editors[target] = editor;
+    return editor;
+}
+''', tw2_ace=twc.js_function('tw2_ace'))
+
+
+def mode_name(mode):
+    '''Tries best-effortly to get the right mode name'''
+
+    if mode:
+        l = mode.lower()
+
+        if l in ('c', 'c++', 'cxx'):
+            return 'c_cpp'
+
+        if l in ('bash', ):
+            return 'sh'
+
+        if l in ace_modes:
+            return l
+
+    return None
+
+
 class AceWidget(twf.TextArea):
     # declare static resources here
     # you can remove either or both of these, if not needed
-    resources = [ace_js, ext_textarea_js]
+    resources = [ace_js, ext_textarea_js, init_js]
 
     mode = twc.Param('The highlighting mode for ace', default='')
 
@@ -40,4 +78,5 @@ class AceWidget(twf.TextArea):
         super(AceWidget, self).prepare()
         # put code here to run just before the widget is displayed
         self.safe_modify('resources')
-        self.add_call(ace_js.require('ace/ext/textarea').transformTextarea(twc.js_function('document.getElementById')(self.compound_id)).getSession().setMode('ace/mode/' + self.mode))
+        mode = mode_name(self.mode)
+        self.add_call(init_js.tw2_ace(self.compound_id, False, mode))
