@@ -12,7 +12,8 @@ ace_js = twc.JSLink(
 ext_textarea_js = twc.JSLink(
     modname=__name__,
     filename='static/ace/ext-textarea.js',
-    transformTextarea=ace_js.require('ace/ext/textarea').transformTextarea
+    #Not safe for multiple widget instances per request
+    #transformTextarea=ace_js.require('ace/ext/textarea').transformTextarea
     )
 
 ace_modes = dict(
@@ -39,4 +40,4 @@ class AceWidget(twf.TextArea):
         super(AceWidget, self).prepare()
         # put code here to run just before the widget is displayed
         self.safe_modify('resources')
-        self.add_call(ext_textarea_js.transformTextarea(twc.js_function('document.getElementById')(self.compound_id)).getSession().setMode('ace/mode/' + self.mode))
+        self.add_call(ace_js.require('ace/ext/textarea').transformTextarea(twc.js_function('document.getElementById')(self.compound_id)).getSession().setMode('ace/mode/' + self.mode))
