@@ -51,14 +51,17 @@ function tw2_ace(target, theme, mode, options) {
         } else {
             session.setUseWrapMode(false);
         }
-    }
 
-    var p = document.createElement("pre");
-    p.style.visibility = "hidden";
-    p = document.body.appendChild(p);
-    var s = window.getComputedStyle(p);
-    editor.container.style.fontSize = s.fontSize;
-    editor.container.style.fontFamily = s.fontFamily;
+        if (options.clone_pre_style) {
+            // Create a hidden dummy pre element and clone the styles
+            var p = document.createElement("pre");
+            p.style.visibility = "hidden";
+            p = document.body.appendChild(p);
+            var s = window.getComputedStyle(p);
+            editor.container.style.fontSize = s.fontSize;
+            editor.container.style.fontFamily = s.fontFamily;
+        }
+    }
 
     ace_editors[target] = editor;
     return editor;
@@ -100,6 +103,7 @@ True:
 Integer:
     Soft wrap after specified characters
 ''', default=True)
+    clone_pre_style = twc.Param(default=True)
 
 #    @classmethod
 #    def post_define(cls):
@@ -113,6 +117,7 @@ Integer:
         mode = mode_name(self.mode)
         options = dict(
             show_gutter=self.show_gutter,
-            soft_wrap=self.soft_wrap
+            soft_wrap=self.soft_wrap,
+            clone_pre_style=self.clone_pre_style
             )
         self.add_call(init_js.tw2_ace(self.compound_id, None, mode, options))
