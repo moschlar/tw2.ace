@@ -15,6 +15,12 @@ ext_textarea_js = twc.JSLink(
     #Not safe for multiple widget instances per request
     #transformTextarea=ace_js.require('ace/ext/textarea').transformTextarea
     )
+tw2_ace_js = twc.JSLink(
+    modname=__name__,
+    filename='static/tw2_ace.js',
+    resources = [ace_js, ext_textarea_js],
+    tw2_ace=twc.js_function('tw2_ace'),
+    )
 
 ace_modes = dict(
     (f.strip('mode-').rstrip('.js'), twc.JSLink(modname=__name__, filename=os.path.join('static/ace', f)))
@@ -22,51 +28,6 @@ ace_modes = dict(
 ace_themes = dict(
     (f.strip('theme-').rstrip('.js'), twc.JSLink(modname=__name__, filename=os.path.join('static/ace', f)))
     for f in os.listdir(os.path.join(os.path.dirname(__file__), 'static/ace')) if f.startswith('theme-'))
-
-
-init_js = twc.JSSource(src=u'''
-// Globals
-var ace_textarea = ace.require("ace/ext/textarea");
-var ace_editors = {};
-
-function tw2_ace(target, theme, mode, options) {
-    var editor = ace_textarea.transformTextarea(document.getElementById(target));
-    var session = editor.getSession();
-
-    if (theme) {
-        editor.setTheme("ace/theme/" + theme);
-    };
-    if (mode) {
-        session.setMode("ace/mode/" + mode);
-    };
-
-    if (options) {
-        editor.renderer.setShowGutter(options.show_gutter);
-        if (Boolean(options.soft_wrap)) {
-            session.setUseWrapMode(true);
-            var col = parseInt(options.soft_wrap, 10);
-            if (isNaN(col))
-                col = null;
-            session.setWrapLimitRange(col, col);
-        } else {
-            session.setUseWrapMode(false);
-        }
-
-        if (options.clone_pre_style) {
-            // Create a hidden dummy pre element and clone the styles
-            var p = document.createElement("pre");
-            p.style.visibility = "hidden";
-            p = document.body.appendChild(p);
-            var s = window.getComputedStyle(p);
-            editor.container.style.fontSize = s.fontSize;
-            editor.container.style.fontFamily = s.fontFamily;
-        }
-    }
-
-    ace_editors[target] = editor;
-    return editor;
-}
-''', tw2_ace=twc.js_function('tw2_ace'))
 
 
 def mode_name(mode):
@@ -90,7 +51,7 @@ def mode_name(mode):
 class AceWidget(twf.TextArea):
     # declare static resources here
     # you can remove either or both of these, if not needed
-    resources = [ace_js, ext_textarea_js, init_js]
+    resources = [tw2_ace_js]
 
     mode = twc.Param('The highlighting mode for ace', default='')
 
@@ -120,4 +81,4 @@ Integer:
             soft_wrap=self.soft_wrap,
             clone_pre_style=self.clone_pre_style
             )
-        self.add_call(init_js.tw2_ace(self.compound_id, None, mode, options))
+        self.add_call(tw2_ace_js.tw2_ace(self.compound_id, None, mode, options))
