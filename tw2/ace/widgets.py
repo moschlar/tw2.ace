@@ -65,6 +65,7 @@ Integer:
     Soft wrap after specified characters
 ''', default=True)
     clone_pre_style = twc.Param(default=True)
+    settings_panel = twc.Param(default=False)
 
 #    @classmethod
 #    def post_define(cls):
@@ -79,6 +80,7 @@ Integer:
         options = dict(
             show_gutter=self.show_gutter,
             soft_wrap=self.soft_wrap,
-            clone_pre_style=self.clone_pre_style
+            clone_pre_style=self.clone_pre_style,
+            settings_panel=self.settings_panel,
             )
         self.add_call(tw2_ace_js.tw2_ace(self.compound_id, None, mode, options))
