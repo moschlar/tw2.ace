@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='tw2.ace',
-    version='0.2',
+    version='0.2.1',
     description='ToscaWidgets2 widget for ACE, a JavaScript-based source code editor',
     long_description=open('README.rst').read(),
     author='Moritz Schlarb',
