@@ -1,4 +1,5 @@
 import os
+import re
 import tw2.core as twc
 import tw2.forms as twf
 
@@ -22,12 +23,16 @@ tw2_ace_js = twc.JSLink(
     tw2_ace=twc.js_function('tw2_ace'),
     )
 
+_ace_mode_lang_re = re.compile(r'^mode-(\S+).js$')
+_ace_theme_lang_re = re.compile(r'^theme-(\S+).js$')
+
 ace_modes = dict(
-    (f.strip('mode-').rstrip('.js'), twc.JSLink(modname=__name__, filename=os.path.join('static/ace', f)))
+    (_ace_mode_lang_re.match(f).group(1), twc.JSLink(modname=__name__, filename=os.path.join('static/ace', f)))
     for f in os.listdir(os.path.join(os.path.dirname(__file__), 'static/ace')) if f.startswith('mode-'))
 ace_themes = dict(
-    (f.strip('theme-').rstrip('.js'), twc.JSLink(modname=__name__, filename=os.path.join('static/ace', f)))
+    (_ace_theme_lang_re.match(f).group(1), twc.JSLink(modname=__name__, filename=os.path.join('static/ace', f)))
     for f in os.listdir(os.path.join(os.path.dirname(__file__), 'static/ace')) if f.startswith('theme-'))
+print ace_modes, ace_themes
 
 
 def mode_name(mode):
