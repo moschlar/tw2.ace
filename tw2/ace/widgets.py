@@ -9,30 +9,33 @@ ace_js = twc.JSLink(
     filename='static/ace/ace.js',
     edit=twc.js_function('ace.edit'),
     require=twc.js_function('ace.require'),
-    )
+)
 ext_textarea_js = twc.JSLink(
     modname=__name__,
     filename='static/ace/ext-textarea.js',
     #Not safe for multiple widget instances per request
     #transformTextarea=ace_js.require('ace/ext/textarea').transformTextarea
-    )
+)
 tw2_ace_js = twc.JSLink(
     modname=__name__,
     filename='static/tw2_ace.js',
-    resources = [ace_js, ext_textarea_js],
+    resources=[ace_js, ext_textarea_js],
     tw2_ace=twc.js_function('tw2_ace'),
-    )
+)
 
 _ace_mode_lang_re = re.compile(r'^mode-(\S+).js$')
 _ace_theme_lang_re = re.compile(r'^theme-(\S+).js$')
 
 ace_modes = dict(
-    (_ace_mode_lang_re.match(f).group(1), twc.JSLink(modname=__name__, filename=os.path.join('static/ace', f)))
-    for f in os.listdir(os.path.join(os.path.dirname(__file__), 'static/ace')) if f.startswith('mode-'))
+    (_ace_mode_lang_re.match(f).group(1),
+        twc.JSLink(modname=__name__, filename=os.path.join('static/ace', f)))
+    for f in os.listdir(os.path.join(os.path.dirname(__file__), 'static/ace'))
+        if f.startswith('mode-'))
 ace_themes = dict(
-    (_ace_theme_lang_re.match(f).group(1), twc.JSLink(modname=__name__, filename=os.path.join('static/ace', f)))
-    for f in os.listdir(os.path.join(os.path.dirname(__file__), 'static/ace')) if f.startswith('theme-'))
-print ace_modes, ace_themes
+    (_ace_theme_lang_re.match(f).group(1),
+        twc.JSLink(modname=__name__, filename=os.path.join('static/ace', f)))
+    for f in os.listdir(os.path.join(os.path.dirname(__file__), 'static/ace'))
+        if f.startswith('theme-'))
 
 
 def mode_name(mode):
@@ -87,5 +90,5 @@ Integer:
             soft_wrap=self.soft_wrap,
             clone_pre_style=self.clone_pre_style,
             settings_panel=self.settings_panel,
-            )
+        )
         self.add_call(tw2_ace_js.tw2_ace(self.compound_id, None, mode, options))
